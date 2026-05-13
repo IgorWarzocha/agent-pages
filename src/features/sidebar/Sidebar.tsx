@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { ProjectGroup } from '../../domain/session';
 import { displayPath, projectName } from '../../domain/path';
 import { agents, filterOptions } from './agents';
-import { isOrphaned, matchesFilters, matchesSearch, type SidebarFilter } from './filter';
+import { currentAgentKind, isOrphaned, matchesFilters, matchesSearch, type SidebarFilter } from './filter';
 
 type Props = {
   groups: ProjectGroup[];
@@ -22,8 +22,8 @@ type Props = {
   onHome: () => void;
 };
 
-function groupAgents(group: ProjectGroup) {
-  return agents.filter(a => group.sessions.some(s => s.kind === a.id));
+function groupAgent(group: ProjectGroup) {
+  return agents.find(a => a.id === currentAgentKind(group));
 }
 
 function filterLabel(filters: Set<SidebarFilter>) {
@@ -42,7 +42,8 @@ function ProviderIcon({ logo, label }: { logo?: string; label: string; color?: s
 
 function AgentMarks({ group }: { group: ProjectGroup }) {
   if (isOrphaned(group)) return <div className="agent-marks"><ProviderIcon label="Orphaned artifact" color="#cc6666" /></div>;
-  return <div className="agent-marks">{groupAgents(group).map(agent => <ProviderIcon key={agent.id} logo={agent.logo} label={agent.label} color={agent.color} />)}</div>;
+  const agent = groupAgent(group);
+  return <div className="agent-marks">{agent && <ProviderIcon logo={agent.logo} label={agent.label} color={agent.color} />}</div>;
 }
 
 export function Sidebar(props: Props) {

@@ -6,9 +6,14 @@ export function isOrphaned(group: ProjectGroup) {
   return group.pages.length > 0 && group.sessions.length === 0;
 }
 
+export function currentAgentKind(group: ProjectGroup) {
+  return group.sessions[0]?.kind;
+}
+
 export function matchesFilters(group: ProjectGroup, filters: Set<SidebarFilter>) {
   if (filters.size === 0) return true;
-  return [...filters].some(filter => filter === 'orphaned' ? isOrphaned(group) : group.sessions.some(s => s.kind === filter));
+  const kind = currentAgentKind(group);
+  return [...filters].some(filter => filter === 'orphaned' ? isOrphaned(group) : kind === filter);
 }
 
 export function matchesSearch(group: ProjectGroup, query: string) {
