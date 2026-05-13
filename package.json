@@ -1,0 +1,28 @@
+{
+  "name": "agent-pages",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/index-sessions.mjs && vite --host 127.0.0.1 --port 47983 --strictPort",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 47983 --strictPort",
+    "index": "node scripts/index-sessions.mjs",
+    "test": "bun test",
+    "check": "node scripts/index-sessions.mjs && bun test && bun run build"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "6.0.1",
+    "lucide-react": "^1.14.0",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-grab": "0.1.34",
+    "typescript": "6.0.3",
+    "vite": "8.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^25.7.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3"
+  }
+}

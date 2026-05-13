@@ -1,0 +1,7 @@
+node_modules/
+dist/
+public/session-index.json
+tsconfig.tsbuildinfo
+.env
+.env.*
+.DS_Store
