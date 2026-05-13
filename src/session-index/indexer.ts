@@ -17,7 +17,8 @@ async function collectPiDirectorySessions(piDir: string): Promise<SessionRecord[
     if (!entry.isDirectory()) continue;
     const full = path.join(piDir, entry.name);
     const s = await stat(full).catch(() => null);
-    const cwd = entry.name.replace(/^--|--$/g, '').replaceAll('-', '/');
+    const decoded = entry.name.replace(/^--|--$/g, '').replaceAll('-', '/');
+    const cwd = decoded.startsWith('home/') || decoded.startsWith('Users/') ? `/${decoded}` : decoded;
     sessions.push(sessionBase({ id: entry.name, cwd, title: entry.name, updatedAt: s?.mtime?.toISOString(), source: full, kind: 'pi' }));
   }
   return sessions;
@@ -25,7 +26,7 @@ async function collectPiDirectorySessions(piDir: string): Promise<SessionRecord[
 
 export async function collectSessions(config: IndexConfig): Promise<SessionRecord[]> {
   const sessions: SessionRecord[] = [];
-  for await (const file of walkJsonl(config.piDir, false)) sessions.push(await readJsonlSession(file, 'pi'));
+  for await (const file of walkJsonl(config.piDir, true)) sessions.push(await readJsonlSession(file, 'pi'));
   sessions.push(...await collectPiDirectorySessions(config.piDir));
   for await (const file of walkJsonl(config.codexDir, true)) sessions.push(await readJsonlSession(file, 'codex'));
   sessions.push(...await collectOpenCodeSessions(config.opencodeDb));
