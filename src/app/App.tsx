@@ -42,6 +42,7 @@ export function App() {
   const [filters, setFilters] = useState<Set<SidebarFilter>>(new Set());
   const [query, setQuery] = useState('');
   const [theme, setTheme] = useState<'dark' | 'light'>(() => localStorage.getItem('agent-pages-theme') === 'light' ? 'light' : 'dark');
+  const [sidebarHidden, setSidebarHidden] = useState(false);
   useEffect(() => { localStorage.setItem('agent-pages-theme', theme); }, [theme]);
   const group = groups.find(g => g.slug === groupSlug) ?? groups.find(g => g.pages.length > 0) ?? groups[0];
   const page = pageFile;
@@ -51,5 +52,5 @@ export function App() {
   function toggleFilter(filter: SidebarFilter) { setFilters(prev => { const next = new Set(prev); next.has(filter) ? next.delete(filter) : next.add(filter); return next; }); }
   function removeArtifact(file: string) { if (confirm(`Permanently delete artifact ${file}?`)) void deleteArtifacts([file]); }
   function removeOrphaned() { const files = groups.filter(isOrphaned).flatMap(g => g.pages.map(p => p.file)); if (confirm(`Permanently delete ${files.length} orphaned artifact${files.length === 1 ? '' : 's'}?`)) void deleteArtifacts(files); }
-  return <div className={`app ${theme === 'light' ? 'theme-light' : 'theme-dark'}`}><Sidebar theme={theme} onToggleTheme={() => setTheme(t => t === 'light' ? 'dark' : 'light')} onHome={showHome} groups={groups} activeGroup={group} activePage={page} filters={filters} query={query} onToggleFilter={toggleFilter} onQueryChange={setQuery} onSelectGroup={selectGroup} onSelectPage={selectPage} onDeleteArtifact={removeArtifact} onDeleteOrphaned={removeOrphaned} /><PageView file={page} /></div>;
+  return <div className={`app ${theme === 'light' ? 'theme-light' : 'theme-dark'} ${sidebarHidden ? 'sidebar-is-hidden' : ''}`}><Sidebar theme={theme} onToggleTheme={() => setTheme(t => t === 'light' ? 'dark' : 'light')} sidebarHidden={sidebarHidden} onToggleSidebar={() => setSidebarHidden(v => !v)} onHome={showHome} groups={groups} activeGroup={group} activePage={page} filters={filters} query={query} onToggleFilter={toggleFilter} onQueryChange={setQuery} onSelectGroup={selectGroup} onSelectPage={selectPage} onDeleteArtifact={removeArtifact} onDeleteOrphaned={removeOrphaned} /><PageView file={page} /></div>;
 }

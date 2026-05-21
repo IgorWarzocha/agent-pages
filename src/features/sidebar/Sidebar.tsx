@@ -1,4 +1,4 @@
-import { Moon, Sun } from 'lucide-react';
+import { Moon, PanelLeftClose, PanelLeftOpen, Sun } from 'lucide-react';
 import { useState } from 'react';
 import type { ProjectGroup } from '../../domain/session';
 import { displayPath, projectName } from '../../domain/path';
@@ -20,6 +20,8 @@ type Props = {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
   onHome: () => void;
+  sidebarHidden: boolean;
+  onToggleSidebar: () => void;
 };
 
 function groupAgent(group: ProjectGroup) {
@@ -51,8 +53,8 @@ export function Sidebar(props: Props) {
   const pageGroups = props.groups.filter(g => g.pages.length > 0 && matchesFilters(g, props.filters) && matchesSearch(g, props.query));
   const orphanedFiles = props.groups.filter(isOrphaned).flatMap(g => g.pages.map(p => p.file));
   const toggleGroup = (slug: string) => setCollapsedGroups(prev => { const next = new Set(prev); next.has(slug) ? next.delete(slug) : next.add(slug); return next; });
-  return <aside className="sidebar">
-    <div className="sidebar-head"><button className="brand" type="button" onClick={props.onHome}><span>agent</span><b>pages</b></button><button className="theme-toggle" type="button" aria-label="Toggle light mode" aria-pressed={props.theme === 'light'} onClick={props.onToggleTheme}><Moon className="theme-icon theme-icon-dark" size={12} strokeWidth={2.4} /><Sun className="theme-icon theme-icon-light" size={12} strokeWidth={2.4} /><span /></button></div>
+  return <aside className={`sidebar ${props.sidebarHidden ? 'sidebar-hidden' : ''}`}>
+    <div className="sidebar-head"><button className="brand" type="button" onClick={props.onHome}><span>agent</span><b>pages</b></button><div className="sidebar-controls"><button className="theme-toggle" type="button" aria-label="Toggle light mode" aria-pressed={props.theme === 'light'} onClick={props.onToggleTheme}><Moon className="theme-icon theme-icon-dark" size={12} strokeWidth={2.4} /><Sun className="theme-icon theme-icon-light" size={12} strokeWidth={2.4} /><span /></button><button className="icon-toggle" type="button" aria-label={props.sidebarHidden ? 'Show sidebar' : 'Hide sidebar'} aria-pressed={props.sidebarHidden} onClick={props.onToggleSidebar}>{props.sidebarHidden ? <PanelLeftOpen size={14} strokeWidth={2.3} /> : <PanelLeftClose size={14} strokeWidth={2.3} />}</button></div></div>
     <details className="agent-select">
       <summary><span>{filterLabel(props.filters)}</span><b>⌄</b></summary>
       <div className="agent-menu">{filterOptions.map(option => <label key={option.id}><input type="checkbox" checked={props.filters.has(option.id)} onChange={() => props.onToggleFilter(option.id)} /><ProviderIcon logo={option.logo} label={option.label} color={option.color} />{option.label}</label>)}{orphanedFiles.length > 0 && <button className="danger-action menu-danger" onClick={props.onDeleteOrphaned}>Remove orphaned artifacts</button>}</div>
