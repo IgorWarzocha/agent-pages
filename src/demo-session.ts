@@ -4,26 +4,24 @@ export const demoSessionIndex: SessionIndex = {
   generatedAt: '2026-05-21T00:00:00.000Z',
   groups: [
     {
-      slug: '~-Work-launch-plan',
-      title: '~/Work/launch/plan',
-      cwd: '~/Work/launch-plan',
+      slug: '~-Work-artifacts',
+      title: '~/Work/artifacts',
+      cwd: '~/Work/artifacts',
       pages: [],
-      sessions: [{ id: 'demo-pi-1', cwd: '~/Work/launch-plan', updatedAt: '2026-05-21T10:30:00.000Z', kind: 'pi', projectName: 'launch-plan', title: 'Compare launch options', source: 'demo' }],
+      sessions: [
+        { id: 'demo-pi-artifacts', cwd: '~/Work/artifacts', updatedAt: '2026-05-21T11:30:00.000Z', kind: 'pi', projectName: 'artifacts', title: 'Prototype rich artifact examples', source: 'demo' },
+        { id: 'demo-claude-artifacts', cwd: '~/Work/artifacts', updatedAt: '2026-05-21T11:12:00.000Z', kind: 'claude', projectName: 'artifacts', title: 'Review artifact interaction patterns', source: 'demo' },
+      ],
     },
     {
-      slug: '~-Work-product-ui',
-      title: '~/Work/product/ui',
-      cwd: '~/Work/product-ui',
+      slug: '~-Work-mini-games',
+      title: '~/Work/mini-games',
+      cwd: '~/Work/mini-games',
       pages: [],
-      sessions: [{ id: 'demo-claude-1', cwd: '~/Work/product-ui', updatedAt: '2026-05-21T09:45:00.000Z', kind: 'claude', projectName: 'product-ui', title: 'Review onboarding flow', source: 'demo' }],
-    },
-
-    {
-      slug: '~-Work-demo',
-      title: '~/Work/demo',
-      cwd: '~/Work/demo',
-      pages: [],
-      sessions: [{ id: 'demo-codex-1', cwd: '~/Work/demo', updatedAt: '2026-05-21T11:15:00.000Z', kind: 'codex', projectName: 'demo', title: 'Prototype interactive artifacts', source: 'demo' }],
+      sessions: [
+        { id: 'demo-codex-games', cwd: '~/Work/mini-games', updatedAt: '2026-05-21T11:45:00.000Z', kind: 'codex', projectName: 'mini-games', title: 'Build interactive mini-game artifacts', source: 'demo' },
+        { id: 'demo-opencode-games', cwd: '~/Work/mini-games', updatedAt: '2026-05-21T11:35:00.000Z', kind: 'opencode', projectName: 'mini-games', title: 'Tune game controls and collision', source: 'demo' },
+      ],
     },
   ],
 };
