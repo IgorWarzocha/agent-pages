@@ -27,9 +27,13 @@ Artifacts are React pages, so they can be more than static mockups. This repo in
 
 - `react-grab` for annotation feedback
 - `lucide-react` for icons
+- `react-markdown` + `remark-gfm` for markdown reports, briefs, and checklists
+- `recharts` for charts and small dashboards
 - `three` for lightweight 3D/WebGL artifacts
+- `clsx` for conditional class names
+- `zod` for validating structured JSON/config used by artifacts
 
-Keep extra dependencies intentional. If an artifact needs markdown rendering, charts, or animation, add the package when there is a real artifact that uses it.
+These are included so installed users can ask for richer artifacts without editing dependencies first. Add more only when a real artifact needs them.
 
 ## How it works
 

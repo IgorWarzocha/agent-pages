@@ -34,6 +34,7 @@ bun run dev
 - Respect the viewport. Use `minmax(0, 1fr)`, wrapping grids, `max-width: 100%`, and avoid horizontal page scrolling unless necessary. If wide content is necessary, put `overflow-x: auto` on that element only.
 - When interactive, include a copy/export action: prompt, markdown, JSON, diff, or selected settings.
 - React Grab is already loaded in dev. Design artifacts so the user can mark them up and paste feedback back into chat.
+- Installed artifact-friendly dependencies are available: `lucide-react`, `react-markdown`, `remark-gfm`, `recharts`, `three`, `clsx`, and `zod`. Use them when they materially improve the artifact; do not add new dependencies unless the user asks.
 - Use Bun for package/script commands. The session indexer itself runs on normal Node.
 
 ## Group slug
