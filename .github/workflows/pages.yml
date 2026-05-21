@@ -9,6 +9,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  deployments: write
 
 concurrency:
   group: pages
@@ -34,3 +35,25 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: success()
+    steps:
+      - name: Keep only latest Pages deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          deployments=$(gh api "repos/$REPO/deployments?environment=github-pages&per_page=100" --jq '.[].id')
+          latest=$(printf '%s\n' "$deployments" | head -n 1)
+          printf '%s\n' "$deployments" | tail -n +2 | while read -r deployment; do
+            [ -n "$deployment" ] || continue
+            gh api "repos/$REPO/deployments/$deployment/statuses" \
+              --method POST \
+              -f state=inactive \
+              -f environment=github-pages >/dev/null
+            gh api "repos/$REPO/deployments/$deployment" \
+              --method DELETE >/dev/null
+          done
+          echo "Kept deployment ${latest:-none}"
