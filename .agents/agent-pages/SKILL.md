@@ -30,7 +30,7 @@ bun run dev
 ## Hard rules
 - Only create or edit artifact files under the discovered `pagesDir` unless the user explicitly asks to change Agent Pages itself.
 - Name files as `<group-slug>__<page-name>.tsx` so the sidebar groups them with the matching session/project.
-- Prefer one self-contained TSX file. Use inline styles or existing global classes; do not add frameworks.
+- Prefer one self-contained TSX file. Put artifact-specific CSS inside that TSX file, either inline or in a local `<style>` tag. Do not edit `src/style.css` or other Agent Pages app files for artifact styling. The app CSS is only for the shell/sidebar/landing page.
 - Respect the viewport. Use `minmax(0, 1fr)`, wrapping grids, `max-width: 100%`, and avoid horizontal page scrolling unless necessary. If wide content is necessary, put `overflow-x: auto` on that element only.
 - When interactive, include a copy/export action: prompt, markdown, JSON, diff, or selected settings.
 - React Grab is already loaded in dev. Design artifacts so the user can mark them up and paste feedback back into chat.

@@ -43,4 +43,17 @@ function agentPagesPlugin(): Plugin {
   };
 }
 
-export default defineConfig({ plugins: [react(), agentPagesPlugin()], server: { host: '127.0.0.1', port: AGENT_PAGES_PORT, strictPort: true } });
+export default defineConfig({
+  plugins: [react(), agentPagesPlugin()],
+  server: { host: '127.0.0.1', port: AGENT_PAGES_PORT, strictPort: true },
+  build: {
+    rolldownOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/three/src/renderers')) return 'three-renderer';
+          if (id.includes('node_modules/three')) return 'three-core';
+        },
+      },
+    },
+  },
+});

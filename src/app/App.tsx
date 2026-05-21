@@ -1,13 +1,14 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
-import { artifactModules, groupsWithPages } from '../artifacts/registry';
+import { artifactLoader, groupsWithPages } from '../artifacts/registry';
 import type { ProjectGroup, SessionIndex } from '../domain/session';
 import { emptyIndex } from '../domain/session';
+import { demoSessionIndex } from '../demo-session';
 import { Sidebar } from '../features/sidebar/Sidebar';
 import { isOrphaned, type SidebarFilter } from '../features/sidebar/filter';
 
 function useSessionIndex() {
   const [index, setIndex] = useState<SessionIndex>(emptyIndex);
-  useEffect(() => { fetch('/session-index.json').then(r => r.json()).then(setIndex).catch(() => setIndex(emptyIndex)); }, []);
+  useEffect(() => { if (import.meta.env.VITE_AGENT_PAGES_DEMO === '1') { setIndex(demoSessionIndex); return; } fetch(`${import.meta.env.BASE_URL}session-index.json`).then(r => r.json()).then(setIndex).catch(() => setIndex(emptyIndex)); }, []);
   return index;
 }
 
@@ -19,7 +20,7 @@ async function deleteArtifacts(files: string[]) {
 }
 
 function PageView({ file }: { file?: string }) {
-  const Component = useMemo(() => { const loader = file ? artifactModules[`../pages/${file}`] : null; return loader ? React.lazy(loader as never) : null; }, [file]);
+  const Component = useMemo(() => { const loader = file ? artifactLoader(file) : null; return loader ? React.lazy(loader as never) : null; }, [file]);
   if (!Component) return <Landing />;
   return <Suspense fallback={<main className="empty"><span className="loader" />Loading page…</main>}><Component /></Suspense>;
 }

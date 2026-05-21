@@ -1,10 +1,17 @@
 import type { ArtifactPage, ProjectGroup, SessionIndex } from '../domain/session';
 import { prettyPath } from '../domain/path';
 
-export const artifactModules = import.meta.glob('../pages/*.tsx');
+const realArtifactModules = import.meta.glob('../pages/*.tsx');
+const demoArtifactModules = import.meta.glob('../demo-pages/*.tsx');
+
+export const artifactModules = import.meta.env.VITE_AGENT_PAGES_DEMO === '1' ? demoArtifactModules : realArtifactModules;
+
+export function artifactLoader(file: string) {
+  return artifactModules[`../pages/${file}`] ?? artifactModules[`../demo-pages/${file}`];
+}
 
 export function pageFromPath(key: string): ArtifactPage {
-  const file = key.replace('../pages/', '');
+  const file = key.replace('../pages/', '').replace('../demo-pages/', '');
   const match = file.match(/^(.+?)__(.+)\.tsx$/);
   return { file, group: match?.[1] ?? 'inbox', slug: match?.[2] ?? file.replace(/\.tsx$/, '') };
 }

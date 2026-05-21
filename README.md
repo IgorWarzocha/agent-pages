@@ -21,6 +21,16 @@ That is the loop:
 
 It is not a docs site or a second product. Artifacts are meant to be temporary. Keep the useful ones, delete the stale ones.
 
+## What artifacts can use
+
+Artifacts are React pages, so they can be more than static mockups. This repo includes a small set of broadly useful dependencies for richer pages:
+
+- `react-grab` for annotation feedback
+- `lucide-react` for icons
+- `three` for lightweight 3D/WebGL artifacts
+
+Keep extra dependencies intentional. If an artifact needs markdown rendering, charts, or animation, add the package when there is a real artifact that uses it.
+
 ## How it works
 
 Artifacts are plain `.tsx` files in `src/pages`:
@@ -57,6 +67,26 @@ http://127.0.0.1:47983
 ```
 
 Agent Pages uses a fixed local port so agents have one stable place to query. If `47983` is already taken, stop the other process and restart Agent Pages.
+
+## Public demo
+
+The repo includes a GitHub Pages demo with fake sessions and example artifacts:
+
+```bash
+bun run preview:demo
+```
+
+Open:
+
+```text
+http://127.0.0.1:47985
+```
+
+The deployed demo is built with:
+
+```bash
+bun run build:pages
+```
 
 ## Install the skill
 
