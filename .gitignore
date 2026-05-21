@@ -5,3 +5,5 @@ tsconfig.tsbuildinfo
 .env
 .env.*
 .DS_Store
+
+.pi/

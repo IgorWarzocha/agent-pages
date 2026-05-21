@@ -1,120 +1,50 @@
 # Agent Pages
 
-Agent Pages is a small local app for the parts of agent work that do not belong in chat.
+Agent Pages is a local place for the visual parts of agent work.
 
-Ask your agent for an artifact when you want to compare options, review a plan, look at a UI direction, inspect a diagram, or tweak a small interactive thing. The agent writes one React page. You open it in Agent Pages, mark it up with React Grab, copy the notes, and send them back.
+Instead of asking an agent to explain everything in chat, ask it to make a page: a plan you can scan, a UI direction you can react to, a chart, a checklist, a small interactive prototype. Then mark it up and send the feedback back to the agent.
 
-That is the loop:
+The loop is simple:
 
-1. Ask the agent to use `agent-pages`.
-2. Review the page it creates.
-3. Annotate it with React Grab.
-4. Paste the feedback back into chat.
+1. Ask your agent to use the `agent-pages` skill.
+2. Open the page it creates.
+3. Annotate it with React Grab, the small white control in the app.
+4. Paste the copied feedback back into chat.
 
-## What it is good for
-
-- Comparing implementation options without reading a wall of prose.
-- Turning a design direction into something you can point at.
-- Reviewing architecture, data flow, or migration plans visually.
-- Making small task-specific editors for prompts, config, copy, or settings.
-- Capturing feedback in a format the agent can act on.
-
-It is not a docs site or a second product. Artifacts are meant to be temporary. Keep the useful ones, delete the stale ones.
-
-## What artifacts can use
-
-Artifacts are React pages, so they can be more than static mockups. This repo includes a small set of broadly useful dependencies for richer pages:
-
-- `react-grab` for annotation feedback
-- `lucide-react` for icons
-- `react-markdown` + `remark-gfm` for markdown reports, briefs, and checklists
-- `recharts` for charts and small dashboards
-- `three` for lightweight 3D/WebGL artifacts
-- `clsx` for conditional class names
-- `zod` for validating structured JSON/config used by artifacts
-
-These are included so installed users can ask for richer artifacts without editing dependencies first. Add more only when a real artifact needs them.
-
-## How it works
-
-Artifacts are plain `.tsx` files in `src/pages`:
-
-```text
-<group-slug>__<page-name>.tsx
-```
-
-The prefix groups the page with the current project/session. The app watches the folder, so new artifacts appear without a manual rebuild.
-
-Agents should not guess where the repo lives. The app exposes a local discovery endpoint:
-
-```bash
-curl -s http://127.0.0.1:47983/api/agent-pages
-```
-
-It returns the app URL, root directory, artifact directory, and port.
+That is it. The page is not meant to become a product. It is a better scratchpad for work that needs shape, layout, comparison, or interaction.
 
 ## Install
 
-You need Bun and Git.
-
-```bash
-git clone https://github.com/IgorWarzocha/agent-pages.git agent-pages
-cd agent-pages
-bun install
-bun run dev
-```
-
-Open:
+Send your agent this file and ask it to install Agent Pages:
 
 ```text
-http://127.0.0.1:47983
+https://github.com/IgorWarzocha/agent-pages/blob/main/INSTALL.md
 ```
 
-Agent Pages uses a fixed local port so agents have one stable place to query. If `47983` is already taken, stop the other process and restart Agent Pages.
+## Customise it
 
-## Public demo
+After Agent Pages is installed, you can change how it works. Open a coding agent inside the Agent Pages repo and tell it what you want to customise.
 
-The repo includes a GitHub Pages demo with fake sessions and example artifacts:
+Point the agent at `docs/change-map.md` first. The docs are written for coding agents: they say what can be customised, which files own it, and which boundaries not to cross.
 
-```bash
-bun run preview:demo
-```
+## Why use it
 
-Open:
+Agent chats are bad at some things:
 
-```text
-http://127.0.0.1:47985
-```
+- comparing options side by side
+- reviewing UI ideas
+- reading architecture or migration plans
+- checking charts, timelines, or tradeoffs
+- giving precise feedback on something visual
 
-The deployed demo is built with:
-
-```bash
-bun run build:pages
-```
-
-## Install the skill
-
-The skill lives in the repo:
-
-```text
-.agents/agent-pages/SKILL.md
-```
-
-For Pi:
-
-```bash
-mkdir -p ~/.pi/agent/skills/agent-pages
-cp .agents/agent-pages/SKILL.md ~/.pi/agent/skills/agent-pages/SKILL.md
-```
-
-For other agents, add the same `SKILL.md` using their local skill or instruction mechanism.
+Agent Pages gives the agent one place to put that work. You get something you can point at, annotate, keep, or delete.
 
 ## Use it
 
-Ask for it directly:
+Ask directly:
 
 ```text
-Use agent-pages to compare the implementation options.
+Use agent-pages to compare these implementation options.
 ```
 
 ```text
@@ -122,38 +52,51 @@ Create an agent-pages artifact for this UI direction so I can annotate it.
 ```
 
 ```text
-Use agent-pages to turn this review into a visual checklist.
+Use agent-pages to turn this review into a checklist and handoff page.
 ```
 
-Then open Agent Pages, select the artifact in the sidebar, and use React Grab — the small white control in the UI — to annotate and copy feedback back to the agent.
+The agent should query the running app first, then write the page into the artifact folder Agent Pages returns. You do not need to tell it where the repo lives.
 
-## Refreshing sessions
+## What agents can build
 
-`public/session-index.json` is local generated state. It is rebuilt from your local Pi, Codex, opencode, Claude, and `src/pages` data.
+Artifacts are React pages. They can be static, interactive, visual, or data-driven.
 
-It refreshes automatically when you start the app:
+Included libraries cover the common cases:
+
+- icons with `lucide-react`
+- markdown with `react-markdown` and `remark-gfm`
+- charts with `recharts`
+- 3D/WebGL with `three`
+- annotation feedback with `react-grab`
+- small helpers with `clsx` and `zod`
+
+So you can ask for reports, dashboards, diagrams, prototypes, mini tools, or 3D sketches without editing dependencies first.
+
+## Refresh sessions
+
+Agent Pages builds its sidebar from your local agent sessions and artifact files. The index refreshes when you start the app:
 
 ```bash
 bun run dev
 ```
 
-Refresh it manually with:
+You can refresh it manually:
 
 ```bash
 bun run index
 ```
 
-If sessions look stale, missing, or from the wrong machine, regenerate the index. Do not treat a copied `session-index.json` as portable data.
+If a session or artifact is missing, restart the app or run the index command.
 
 ## Troubleshooting
 
-Check whether the app is running:
+Check whether Agent Pages is running:
 
 ```bash
 curl -s http://127.0.0.1:47983/api/agent-pages
 ```
 
-If that fails, start it:
+If that fails, start it again:
 
 ```bash
 bun run dev
@@ -161,12 +104,8 @@ bun run dev
 
 If an artifact does not appear:
 
-- make sure it is in the `pagesDir` returned by the discovery endpoint
-- make sure the filename uses `<group-slug>__<page-name>.tsx`
+- make sure the app is running
+- ask the agent to query `/api/agent-pages` instead of guessing paths
 - run `bun run index`
+- check that the file is in the returned artifact directory
 
-For a full local check:
-
-```bash
-bun run check
-```

@@ -34,7 +34,13 @@ bun run dev
 - Respect the viewport. Use `minmax(0, 1fr)`, wrapping grids, `max-width: 100%`, and avoid horizontal page scrolling unless necessary. If wide content is necessary, put `overflow-x: auto` on that element only.
 - When interactive, include a copy/export action: prompt, markdown, JSON, diff, or selected settings.
 - React Grab is already loaded in dev. Design artifacts so the user can mark them up and paste feedback back into chat.
-- Installed artifact-friendly dependencies are available: `lucide-react`, `react-markdown`, `remark-gfm`, `recharts`, `three`, `clsx`, and `zod`. Use them when they materially improve the artifact; do not add new dependencies unless the user asks.
+- Installed artifact-friendly dependencies are available. Use them when they materially improve the artifact; do not add new dependencies unless the user asks:
+  - `lucide-react`: icons and small visual affordances.
+  - `react-markdown` + `remark-gfm`: render markdown briefs, reports, tables, and task lists.
+  - `recharts`: charts, dashboards, comparisons, and simple data views.
+  - `three`: self-contained 3D/WebGL sketches or spatial scenes.
+  - `clsx`: conditional class names without noisy string concatenation.
+  - `zod`: validate structured JSON/config before rendering it.
 - Use Bun for package/script commands. The session indexer itself runs on normal Node.
 
 ## Group slug
@@ -48,12 +54,17 @@ node -e "const os=require('os');const cwd=process.cwd();console.log(cwd.replace(
 ```
 
 ## Theme guidance
-The shell has a light/dark toggle and derives both palettes from Pi source themes:
+The shell has a light/dark toggle. For ordinary artifacts, use the app theme variables instead of hardcoded global palettes:
 
-- Dark: `pi-mono/packages/coding-agent/src/modes/interactive/theme/dark.json` — page bg `#18181e`, card bg `#1e1e24`, panel `#282832`, selected `#3a3a4a`, text `#f4f4f4`, muted `#808080`, dim `#666666`, line `#505050`, accent/code `#8abeb7`, link `#81a2be`, success `#b5bd68`, error `#cc6666`, warning `#f0c674`, user message bg `#343541`.
-- Light: `pi-mono/packages/coding-agent/src/modes/interactive/theme/light.json` — page bg `#f8f8f8`, card bg `#ffffff`, panel `#e8e8f0`, selected `#d0d0e0`, text `#111111`, muted `#6c6c6c`, dim `#767676`, line `#b0b0b0`, accent/code `#5a8080`, link `#547da7`, success `#588458`, error `#aa5555`, warning `#9a7326`, user message bg `#e8e8e8`.
+- `var(--paper)`: page background
+- `var(--panel)`, `var(--panel-deep)`: cards and raised panels
+- `var(--ink)`: primary text
+- `var(--muted)`, `var(--dim)`: secondary text
+- `var(--line)`, `var(--line-soft)`: borders
+- `var(--accent)`, `var(--link)`: highlights and links
+- `var(--success)`, `var(--warning)`, `var(--error)`: status colors
 
-For ordinary artifacts, follow that palette. If the artifact is about UI, visual design, branding, or theming, override it freely to show the proposed UI accurately.
+If the artifact is about UI, visual design, branding, or theming, override the app theme freely to show the proposed UI accurately.
 
 ## Workflow
 1. Query `/api/agent-pages` and read `pagesDir`.
@@ -65,7 +76,11 @@ For ordinary artifacts, follow that palette. If the artifact is about UI, visual
 7. If grouping looks stale, run `bun run index` from `rootDir`.
 8. Tell the user to open `url`, select the artifact, annotate with React Grab, and paste feedback back.
 
-## Page template
+## Example only
+
+An artifact is just a React file. Do not reuse this structure by default. It is only here to show the minimum shape: export one React component from one TSX file.
+
+Pick the layout, styling, components, and interactions that fit the user's task. A comparison page, chart dashboard, 3D sketch, markdown report, review checklist, tiny editor, and UI mockup should not all look like the example below.
 
 ```tsx
 export default function Proposal() {
@@ -92,7 +107,7 @@ If the dashboard is not visible or the discovery endpoint fails:
 curl -s http://127.0.0.1:47983/api/agent-pages
 ```
 
-- If curl fails, the app is not running. Tell the user to start Agent Pages from their clone with `bun run dev`, or check their systemd/launchd service logs.
+- If curl fails, the app is not running. Tell the user to start Agent Pages using their chosen install method. This may be `bun run dev`, a shortcut, or a system service configured during installation.
 - If curl succeeds, use the returned `url` and `pagesDir`; do not guess paths.
 
 If the artifact was created but does not appear in the sidebar:
