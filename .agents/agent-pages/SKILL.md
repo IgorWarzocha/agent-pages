@@ -34,6 +34,7 @@ bun run dev
 - Respect the viewport. Use `minmax(0, 1fr)`, wrapping grids, `max-width: 100%`, and avoid horizontal page scrolling unless necessary. If wide content is necessary, put `overflow-x: auto` on that element only.
 - When interactive, include a copy/export action: prompt, markdown, JSON, diff, or selected settings.
 - React Grab is already loaded in dev. Design artifacts so the user can mark them up and paste feedback back into chat.
+- After creating or updating an artifact, open Agent Pages in the user's browser at the returned `url` so they can review it immediately. If your environment cannot open a browser, say so and give the `url`.
 - Installed artifact-friendly dependencies are available. Use them when they materially improve the artifact; do not add new dependencies unless the user asks:
   - `lucide-react`: icons and small visual affordances.
   - `react-markdown` + `remark-gfm`: render markdown briefs, reports, tables, and task lists.
@@ -74,7 +75,7 @@ If the artifact is about UI, visual design, branding, or theming, override the a
 5. Export a default React component.
 6. Make it immediately useful: concise headings, options, diagrams, annotated snippets, timelines, tables, or small interactions.
 7. If grouping looks stale, run `bun run index` from `rootDir`.
-8. Tell the user to open `url`, select the artifact, annotate with React Grab, and paste feedback back.
+8. Open `url` in the user's browser so they can review the artifact immediately. If browser opening is unavailable, give the `url` and tell the user to select the artifact, annotate with React Grab, and paste feedback back.
 
 ## Example only
 
