@@ -8,12 +8,24 @@ The loop is simple:
 
 1. Ask your agent to use the `agent-pages` skill.
 2. Open the page it creates.
-3. Annotate it with React Grab, the small white control in the app.
-4. Paste the copied feedback back into chat.
+3. Hold Ctrl and click an element or drag an area to annotate it. The Annotate toolbar also offers rectangles, arrows and freehand drawing.
+4. Add notes, then send them as a batch. Your agent reads the shared annotations through MCP, without a copy-paste handoff.
 
 That is it. The page is not meant to become a product. It is a better scratchpad for work that needs shape, layout, comparison, or interaction.
 
+## Draw together
+
+Open **Whiteboards** in the sidebar to create a shared Excalidraw board. Draw, add text, paste a screenshot or drop an image onto the canvas. Open the same board link in another browser to work on it together. Changes appear live and are saved on the Agent Pages server.
+
+Connect an agent through the [MCP server](docs/mcp.md) to draw, inspect changes, view screenshots and edit artifacts. Keep the board open while collaborating. The editor uses Excalidraw's own drawing tools and scene reconciliation. It does not use Excalidraw's hosted rooms, accounts or end-to-end encryption.
+
+Boards and agent checkpoints stay in SQLite under the server's local `.agent-pages/boards` directory. Live browser edits are shared immediately and disk saves are batched. The toolbar distinguishes synced edits from durable saves. Agent reads and updates create durable checkpoints for inspecting later changes. Static builds do not include the collaboration service. See [whiteboard storage and API](docs/whiteboards.md) for timing, limits and recovery details.
+
+Interactive pages can collect choices and comments too. Submit feedback on the page and the agent can read it directly through MCP, without copying answers into chat. Responses are saved in server SQLite and available across browsers. See [artifact feedback](docs/feedback.md).
+
 ## Install
+
+Local development requires Bun 1.4.4 or newer and Node 22.13 or newer. Whiteboards use Node's built-in SQLite support. The Bun minimum is needed for the lockfile's version-scoped dependency overrides.
 
 Send your agent this file and ask it to install Agent Pages:
 

@@ -1,0 +1,21 @@
+[Unit]
+Description=Agent Pages MCP HTTP bridge
+After=network.target agent-pages.service
+Wants=agent-pages.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Work/agent-pages
+EnvironmentFile=%h/.config/agent-pages-mcp/service.env
+Environment=MISE_EXEC_AUTO_INSTALL=false
+ExecStart=/usr/bin/mise exec bun@latest -- bun scripts/mcp-http.ts
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=5
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+LimitNOFILE=256
+
+[Install]
+WantedBy=default.target

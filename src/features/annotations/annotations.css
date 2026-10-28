@@ -1,0 +1,46 @@
+.annotation-surface{position:relative;min-width:0}
+.annotation-content{position:relative;display:flow-root;min-width:0;min-height:100dvh}
+.annotation-armed .annotation-content{cursor:crosshair;touch-action:none}
+.annotation-marks,.annotation-preview{position:absolute;left:0;top:0;pointer-events:none;overflow:hidden;z-index:40;color:#e56e2a}
+.annotation-marks rect,.annotation-marks polyline,.annotation-preview polyline{stroke:currentColor;stroke-width:2.5;fill:none;vector-effect:non-scaling-stroke}
+.annotation-marks rect{fill:#e56e2a0c}
+.annotation-marks .selected rect,.annotation-marks .selected polyline{stroke-width:4}
+.annotation-preview{z-index:41;color:#e56e2a}
+.annotation-preview polyline{stroke-dasharray:5 4}
+.annotation-pin{pointer-events:all;cursor:pointer}
+.annotation-pin circle{fill:#b7410c;stroke:white;stroke-width:1.5}
+.annotation-pin text{fill:white;font:600 12px system-ui;stroke:none;user-select:none}
+.annotation-text{pointer-events:auto;cursor:pointer;box-sizing:border-box;width:100%;max-height:180px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:4px 6px;border:1px solid transparent;border-radius:3px;color:var(--ink);background:var(--paper);font:600 16px/1.4 system-ui}
+.annotation-marks .selected .annotation-text{border-color:currentColor;border-style:dashed}
+.annotation-text:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.annotation-panel{position:fixed;right:18px;bottom:18px;z-index:1000;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 28px #0003;max-width:calc(100vw - 24px);font:13px/1.45 system-ui}
+.annotation-panel.is-open{width:300px;max-height:min(680px,80dvh);overflow-y:auto;padding:10px;box-sizing:border-box}
+.annotation-header,.annotation-note-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.annotation-panel button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;font:inherit;cursor:pointer;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:7px 10px}
+.annotation-panel .annotation-icon{width:40px;min-width:40px;padding:0}
+.annotation-panel svg{flex-shrink:0}
+.annotation-panel button:disabled{opacity:.5;cursor:default}
+.annotation-panel button[aria-pressed=true],.annotation-panel button[aria-current=true]{border-color:var(--accent);background:var(--panel-deep)}
+.annotation-panel :focus-visible,.annotation-pin:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.annotation-tools,.annotation-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.annotation-tools{padding-bottom:10px;border-bottom:1px solid var(--line)}
+.annotation-note{margin-top:6px}
+.annotation-note label{display:block;font-weight:600}
+.annotation-note-header{margin-bottom:4px}
+.annotation-note-header .annotation-icon{border-color:transparent;background:transparent}
+.annotation-note textarea{display:block;width:100%;box-sizing:border-box;min-height:90px;resize:vertical;font:inherit;padding:8px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--ink)}
+.annotation-warning{color:var(--muted);font-size:12px;margin:6px 0}
+.annotation-list{list-style:none;margin:10px 0 0;padding:0;max-height:150px;overflow:auto}
+.annotation-list li+li{margin-top:4px}
+.annotation-list button{width:100%;justify-content:flex-start;text-align:left;overflow-wrap:anywhere}
+.annotation-list-comment{flex:1;min-width:0}
+.annotation-number,.annotation-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;box-sizing:border-box;padding:0 4px;border-radius:50%;font-size:11px;font-variant-numeric:tabular-nums;background:var(--panel-deep)}
+.annotation-number{background:var(--ink);color:var(--paper)}
+.annotation-state{color:var(--muted)}
+.annotation-actions .annotation-send{margin-left:auto;background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.annotation-send .annotation-count{color:var(--ink);background:var(--paper)}
+.annotation-spinner{animation:annotation-spin 1s linear infinite}
+@keyframes annotation-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.annotation-spinner{animation:none}}
+.annotation-panel [role=alert]{color:var(--error);overflow-wrap:anywhere}
+@media(max-width:600px){.annotation-panel{right:10px;bottom:10px}.annotation-panel.is-open{max-height:65dvh}}

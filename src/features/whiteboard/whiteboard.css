@@ -1,0 +1,21 @@
+.whiteboards{width:min(960px,100%);margin:0 auto;padding:clamp(24px,5vw,64px)}
+.whiteboards h1{font-size:clamp(32px,5vw,52px);letter-spacing:-.05em;margin:0 0 32px}
+.whiteboard-create{display:grid;gap:8px;margin-bottom:32px}
+.whiteboard-create>div{display:flex;gap:10px;flex-wrap:wrap}
+.whiteboard-create input{min-width:0;flex:1;padding:10px 12px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;font:inherit}
+.whiteboards button,.whiteboard-toolbar button,.whiteboard-error button{padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);cursor:pointer}
+.whiteboards button:disabled,.whiteboard-toolbar button:disabled{opacity:.5;cursor:default}
+.whiteboards :focus-visible,.whiteboard-workspace>header :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.whiteboard-list{list-style:none;padding:0;margin:0}
+.whiteboard-list a{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:20px 0;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.whiteboard-list a:hover strong{text-decoration:underline}
+.whiteboard-list time{color:var(--muted);font-size:13px;flex-shrink:0}
+.whiteboard-workspace{height:100dvh;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.whiteboard-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;flex-shrink:0;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper)}
+.whiteboard-toolbar h1{flex:1;min-width:80px;margin:0;font-size:16px;overflow-wrap:anywhere}
+.sidebar-is-hidden .whiteboard-toolbar{padding-inline-start:120px}
+.whiteboard-toolbar [role=status]{font-size:12px;color:var(--muted)}
+.whiteboard-error{background:var(--panel-deep);color:var(--error);padding:12px 16px;overflow-wrap:anywhere}
+.whiteboard-canvas{flex:1;min-height:0;position:relative}
+.whiteboard-loading{padding:24px}
+@media(max-width:900px){.app.view-whiteboards{grid-template-rows:auto minmax(0,1fr);height:100dvh;min-height:0}.whiteboard-workspace{height:100%;min-height:0}.whiteboard-list a{flex-direction:column;gap:4px}.whiteboard-toolbar{gap:8px;padding:8px}.whiteboard-toolbar h1{order:-1;flex-basis:100%}}

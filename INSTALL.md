@@ -8,7 +8,7 @@ If your agent environment has an ask-questions/planning tool, use it before maki
 
 ## Goal
 
-Install Agent Pages locally, install its agent skill, and optionally make it easy to start on the user's machine.
+Install Agent Pages locally, choose MCP or installed-skill access, and optionally make it easy to start on the user's machine.
 
 ## Steps
 
@@ -33,7 +33,7 @@ If the directory already exists, do not overwrite it. Ask whether to use the exi
 
 ### 2. Install dependencies
 
-Agent Pages uses Git and Bun.
+Agent Pages uses Git, Bun 1.4.4 or newer, and Node 22.13 or newer for its built-in SQLite support.
 
 Check that Git exists:
 
@@ -57,13 +57,19 @@ https://bun.sh/
 
 If the user does not want to install Bun, ask whether they want you to adapt the project to another package manager/bundler. Do not do this silently. Rewiring the project away from Bun requires code and script changes, so ask for their preferred target first, such as npm, pnpm, yarn, or another setup.
 
-Then install dependencies:
+Check Node before installing dependencies:
+
+```bash
+node --version
+```
+
+If it is missing or older than 22.13, install a current stable Node release first. Then install dependencies:
 
 ```bash
 bun install
 ```
 
-### 3. Install and tailor the skill
+### 3. Choose skill access
 
 The bundled skill is here:
 
@@ -71,7 +77,9 @@ The bundled skill is here:
 .agents/agent-pages/SKILL.md
 ```
 
-Ask whether the user wants the skill installed globally or only for one repo.
+Agents with the Agent Pages MCP server configured can call `get_skill` without installing a skill. See `docs/mcp.md` for MCP setup. The tool reads this same bundled package, including its on-demand references.
+
+For agents that use installed skills, ask whether the user wants a global install or one repo only.
 
 - Global skill install is preferred. The user installs it once and can use `agent-pages` from any project.
 - Repo-level install is more cumbersome. The user has to copy/install it separately for each repo where they want to use Agent Pages.
@@ -84,29 +92,23 @@ Find the user's likely skill directories from their environment. Check common lo
 
 If there are already global skills present, prefer the matching global location. If more than one plausible skill system exists, ask the user which agent they want to install Agent Pages for.
 
-Copy the skill into the chosen location. Preserve the skill name `agent-pages`.
+Copy the complete skill directory, including `references`, into the chosen location. Preserve the skill name `agent-pages`.
 
 Example global install layout:
 
 ```bash
 mkdir -p <global-skills-dir>/agent-pages
-cp .agents/agent-pages/SKILL.md <global-skills-dir>/agent-pages/SKILL.md
+cp -R .agents/agent-pages/. <global-skills-dir>/agent-pages/
 ```
 
 Example repo-level install layout:
 
 ```bash
 mkdir -p <repo>/.agents/agent-pages
-cp .agents/agent-pages/SKILL.md <repo>/.agents/agent-pages/SKILL.md
+cp -R .agents/agent-pages/. <repo>/.agents/agent-pages/
 ```
 
-After the user chooses how they want to start Agent Pages in step 5, tidy the installed skill so its troubleshooting section matches their choice. For example:
-
-- if they chose manual startup, say to run `bun run dev` from their Agent Pages clone
-- if they chose a shortcut, name the shortcut
-- if they chose a service, name the service and include the basic status/log command for their OS
-
-Do not leave irrelevant service/shortcut instructions in the installed skill.
+Keep machine-specific launch commands in local agent guidance rather than editing the portable skill. Record the chosen shortcut or service there after step 5.
 
 ### 4. Start Agent Pages
 

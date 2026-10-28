@@ -24,7 +24,12 @@ Do not use these docs for normal artifact creation. Normal artifacts are one TSX
 | Change landing page or app-level state | `docs/ui.md` | `src/app/App.tsx`, `src/style.css` | `bun run check`; visually check landing page |
 | Change shell theme/tokens/layout | `docs/ui.md` | `src/style.css` | `bun run check`; visually check dark and light mode |
 | Add a library for future artifacts | `docs/dependencies.md` | `package.json`, `bun.lock`, `.agents/agent-pages/SKILL.md`, `README.md` if user-facing | `bun run check` |
-| Change local dev API endpoints | `docs/architecture.md` | `vite.config.ts` | endpoint-specific `curl`, then `bun run check` |
+| Change local dev API endpoints | `docs/architecture.md` | `server/api.ts`, `server/*-api.ts`, `server/http.ts` | endpoint-specific `curl`, then `bun run check` |
+| Change shared whiteboards or scene sync | `docs/whiteboards.md` | `src/features/whiteboard/*`, `server/whiteboards.ts`, `server/boards-api.ts` | focused tests and two-browser collaboration, then `bun run check` |
+| Change MCP tools, resources or subscriptions | `docs/mcp.md` | `server/mcp*.ts`, `server/change-feed.ts`, `server/http-client.ts`, `scripts/mcp*.ts` | actual stdio and HTTP integration, then `bun run check` |
+| Change shared artifact choices or comments | `docs/feedback.md` | `src/features/feedback/*`, `server/feedback.ts`, `server/feedback-api.ts` | focused tests and submit/reload/MCP read-back, then `bun run check` |
+| Change in-place page markup or batches | `docs/annotations.md` | `src/features/annotations/*`, `server/annotations.ts`, `server/annotations-api.ts`, `server/annotation-client.ts` | gesture/send/live read/clear and focused tests, then `bun run check` |
+| Change bundled skill or its MCP delivery | `.agents/agent-pages/SKILL.md` and its references | `.agents/agent-pages/*`, `server/mcp.ts`, `INSTALL.md` | verify reference paths and installed copies; actual stdio retrieval for delivery changes |
 | Change domain/path/session types | `docs/architecture.md` | `src/domain/*`, tests | targeted tests if added/changed, then `bun run check` |
 
 ## Boundaries

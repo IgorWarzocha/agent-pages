@@ -2,6 +2,7 @@
   "name": "agent-pages",
   "private": true,
   "version": "0.1.0",
+  "packageManager": "bun@1.4.4",
   "type": "module",
   "scripts": {
     "dev": "node scripts/index-sessions.mjs && vite --host 127.0.0.1 --port 47983 --strictPort",
@@ -12,27 +13,41 @@
     "preview": "vite preview --host 127.0.0.1 --port 47983 --strictPort",
     "index": "node scripts/index-sessions.mjs",
     "test": "bun test",
+    "mcp": "bun scripts/mcp.ts",
+    "mcp:http": "bun scripts/mcp-http.ts",
     "check": "node scripts/index-sessions.mjs && bun test && bun run build"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "6.0.2",
+    "@excalidraw/excalidraw": "0.18.1",
+    "@modelcontextprotocol/node": "2.1.2",
+    "@modelcontextprotocol/server": "2.4.0",
+    "@vitejs/plugin-react": "6.1.2",
     "clsx": "^2.1.1",
-    "lucide-react": "^1.16.0",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "react-grab": "0.1.37",
+    "lucide-react": "^1.63.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-grab": "0.2.0",
     "react-markdown": "^10.1.0",
-    "recharts": "^3.8.1",
+    "recharts": "^3.10.1",
     "remark-gfm": "^4.0.1",
-    "three": "^0.184.0",
-    "typescript": "6.0.3",
-    "vite": "8.0.14",
-    "zod": "^4.4.3"
+    "three": "^0.186.1",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "zod": "^4.6.7"
+  },
+  "overrides": {
+    "nanoid@3": "3.3.20",
+    "nanoid@4": "5.1.16",
+    "lodash-es": "4.18.1",
+    "smol-toml": "1.9.1",
+    "source-map-js": "1.2.2",
+    "katex@0.16": "0.19.1"
   },
   "devDependencies": {
-    "@types/node": "^25.9.1",
-    "@types/react": "^19.2.15",
-    "@types/react-dom": "^19.2.3",
-    "@types/three": "^0.184.1"
+    "@modelcontextprotocol/client": "2.4.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0"
   }
 }

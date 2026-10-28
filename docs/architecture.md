@@ -23,7 +23,19 @@ The app must make that page discoverable without manual route edits, sidebar edi
 - `src/features/sidebar/*`: provider filter, search, group list, sidebar rendering.
 - `src/session-index/*`: session importers and index assembly.
 - `scripts/index-sessions.mjs`: Node CLI wrapper around the indexer.
-- `vite.config.ts`: local dev API, artifact delete endpoint, Vite build config.
+- `vite.config.ts`: Vite composition and build config.
+- `server/api.ts`: local HTTP API composition and shared store lifetime.
+- `server/whiteboards.ts`: live board authority, bounded persistence scheduling and subscriptions.
+- `server/whiteboard-database.ts`: SQLite transactions, deduplicated attachment blobs, checkpoints and legacy migration.
+- `server/whiteboard-changes.ts`: checkpoint-to-current scene comparisons.
+- `src/features/whiteboard/*`: scene validation, editor, browser sync and rendered previews.
+- `server/mcp.ts`, `server/http-client.ts`, `scripts/mcp.ts`: MCP tools and their connection to the same HTTP authority.
+- `server/mcp-http.ts`, `scripts/mcp-http.ts`, `agent-pages-mcp.service`: authenticated remote MCP bridge, independent of the app process and stdio transport.
+- `server/change-feed.ts`, `server/mcp-events.ts`, `server/mcp-resources.ts`: local API invalidations, their transport to MCP serving entries and subscribable saved-content resources.
+- `src/features/annotations/*`, `server/annotations.ts`, `server/annotations-api.ts`: in-place markup, durable batches and live viewers. See `docs/annotations.md`.
+- `server/excalidraw-assets.ts`: local Excalidraw fonts in development and builds.
+- `.agent-pages/boards`: private persisted whiteboard data, excluded from Git.
+- `scripts/check-runtime.mjs`: existing canonical service's mise Node security guard. Retained because its systemd unit imports it even when the checkout switches branches.
 - `public/session-index.json`: generated local data; do not hand-edit or commit.
 
 ## Boundary rules

@@ -1,2 +1,2 @@
 /// <reference types="vite/client" />
-declare module 'react-grab';
+interface Window { EXCALIDRAW_ASSET_PATH?: string; }

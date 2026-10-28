@@ -12,7 +12,7 @@ Adding a dependency changes Agent Pages itself. Ask the user before doing it.
 - `three`: 3D/WebGL sketches.
 - `clsx`: conditional class names.
 - `zod`: validate structured JSON/config.
-- `react-grab`: annotation feedback in the app shell.
+- `react-grab`: source-stack context for the app shell's in-place annotations, using its core API without a second floating toolbar.
 
 ## Change recipe
 
@@ -26,3 +26,11 @@ Adding a dependency changes Agent Pages itself. Ask the user before doing it.
 ## Keep the base reasonable
 
 Prefer dependencies that unlock broad artifact categories. Avoid adding one-off libraries for a single throwaway artifact unless the user explicitly wants that.
+
+## Security overrides
+
+The lockfile uses Bun 1.4.4's version-scoped overrides. Nano ID 3 stays on its patched 3.x line. The Mermaid converter's pinned Nano ID 4 moves to patched 5.x. Its runtime imports only the compatible named `nanoid()` export. Other overrides update vulnerable transitive Lodash ES, TOML and source-map packages. Recheck these pins when their owning dependencies update.
+
+Mermaid's KaTeX 0.16 dependency is overridden to 0.19.1 to fix its trust-restriction advisory. Formula rendering has been checked through Mermaid in the running app. The dependency audit is clean.
+
+TypeScript 7 uses a platform-specific native compiler supplied through optional dependencies. Keep optional dependencies enabled when installing or deploying. The app uses the compiler CLI, not the removed TypeScript 6 compiler API.

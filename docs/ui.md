@@ -35,7 +35,7 @@ Use `import.meta.env.BASE_URL` for public asset paths so the app still works whe
 
 Edit CSS variables in `src/style.css`.
 
-Artifacts should use variables for ordinary pages:
+These shell tokens are available to artifacts as optional integration points. They do not prescribe an artifact's typography, palette or layout:
 
 - `--paper`
 - `--panel`
@@ -50,6 +50,8 @@ Artifacts should use variables for ordinary pages:
 - `--success`
 - `--warning`
 - `--error`
+
+The shell supplies a shrinking content column and bounded navigation on narrow screens. Keep artifact design classes and element styling out of the shell stylesheet. Artifacts own their composition and must scope any wider content to a local scroll container.
 
 ### Add artifact-specific styles
 
