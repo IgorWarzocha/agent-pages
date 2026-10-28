@@ -35,7 +35,6 @@ The app must make that page discoverable without manual route edits, sidebar edi
 - `src/features/annotations/*`, `server/annotations.ts`, `server/annotations-api.ts`: in-place markup, durable batches and live viewers. See `docs/annotations.md`.
 - `server/excalidraw-assets.ts`: local Excalidraw fonts in development and builds.
 - `.agent-pages/boards`: private persisted whiteboard data, excluded from Git.
-- `scripts/check-runtime.mjs`: existing canonical service's mise Node security guard. Retained because its systemd unit imports it even when the checkout switches branches.
 - `public/session-index.json`: generated local data; do not hand-edit or commit.
 
 ## Boundary rules

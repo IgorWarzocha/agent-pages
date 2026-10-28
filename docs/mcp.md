@@ -21,19 +21,19 @@ Use an absolute path to `bun` as well if the MCP client's environment does not i
 
 ## Remote and cloud clients
 
-Use Streamable HTTP for clients that accept a remote MCP URL and an `Authorization: Bearer` header. The canonical server endpoint is:
+Use Streamable HTTP for clients that accept a remote MCP URL and an `Authorization: Bearer` header. Point the client at your own deployment, for example:
 
 ```text
-https://igor-server.tail8430d1.ts.net/agent-pages-mcp
+https://your-server.example/agent-pages-mcp
 ```
 
-The credential is in `/home/igorw/.config/agent-pages-mcp/token` on the server. Paste its contents only into the client's protected credential field. Do not put it in chat or tracked configuration. This is a shared bearer secret, not OAuth. A client that requires OAuth and cannot supply a bearer header is not compatible with this setup.
+Create the server token during setup below, then store it in the client's protected credential field. Do not put it in chat or tracked configuration. This is a shared bearer secret, not OAuth. A client that requires OAuth and cannot supply a bearer header is not compatible with this setup.
 
 Only give the token to trusted agents. Artifact writes create executable TSX that runs in the browser, and the tools can read and change shared app content. Do not expose Vite or the local API publicly as a substitute for this authenticated endpoint.
 
-The canonical deployment follows Herdr's existing service pattern: `agent-pages-mcp.service` listens on `127.0.0.1:8794/mcp`, and the existing Tailscale Funnel maps `/agent-pages-mcp` to it. The app remains a separate service. The MCP service has its own token, not Herdr's credential. Unauthenticated requests receive HTTP 401. Requests carrying an unapproved `Origin` receive HTTP 403.
+The MCP bridge listens on `127.0.0.1:8794/mcp` by default. Put an HTTPS reverse proxy in front of it for remote access. The app remains a separate service. Give the MCP bridge its own token rather than reusing another service's credential. Unauthenticated requests receive HTTP 401. Requests carrying an unapproved `Origin` receive HTTP 403.
 
-### Set up another server
+### Set up a server
 
 1. Start the app. Create a 32-byte random token as 64 lowercase hexadecimal characters in a private file owned by the service user. On POSIX, use mode `0600` and keep its containing directory private.
 2. Set `AGENT_PAGES_MCP_TOKEN_FILE` to its absolute path. Optional settings are `AGENT_PAGES_MCP_PORT` with default `8794`, `AGENT_PAGES_URL` with default `http://127.0.0.1:47983`, and `AGENT_PAGES_MCP_ORIGINS`, a comma-separated list of permitted browser origins. An empty list rejects every request with an `Origin` header. Non-browser clients may omit that header.
@@ -41,7 +41,7 @@ The canonical deployment follows Herdr's existing service pattern: `agent-pages-
 4. For Linux installations using mise and `~/Work/agent-pages`, the supplied `agent-pages-mcp.service` can be linked into `~/.config/systemd/user/`. Put the settings above in `~/.config/agent-pages-mcp/service.env` with private permissions. The unit uses the installed mise `bun@latest`, does not auto-install runtimes, and starts the existing `agent-pages.service`. Adjust paths and service names for a different installation. Run `systemctl --user daemon-reload` and `systemctl --user enable --now agent-pages-mcp.service`.
 5. Verify `systemctl --user is-active agent-pages-mcp.service`, then make an unauthenticated POST to the MCP endpoint. Expect 401. Connect the actual MCP client with its bearer header and follow the checks below. Inspect `journalctl --user -u agent-pages-mcp.service` for failures.
 
-Choose public or private HTTPS routing deliberately. On the canonical server, port 443 was already public through Funnel before this route was added. Existing Herdr, Discord and other handlers were preserved. For another installation, inspect routing and obtain approval before exposing a new endpoint or changing a shared port's public/private status.
+Choose public or private HTTPS routing deliberately. Inspect existing routes before exposing a new endpoint or changing a shared port's public/private status. Preserve unrelated proxy routes.
 
 ### SSH alternative
 
@@ -66,7 +66,7 @@ Replace the host with your configured SSH alias and both paths with their server
 2. Call `get_app_info` and `list_artifacts` to verify access to the running app.
 3. For a page with feedback controls, submit a choice and comment in the browser, then call `get_artifact_feedback` with its filename. Confirm the saved values match.
 
-`get_skill` works without the app running. The other checks require the app. The supplied artifact, whiteboard and feedback tools have been exercised through actual MCP stdio connections. The canonical HTTPS endpoint has also passed an official SDK connection that created, listed, read and updated a temporary artifact, then removed it through the local API. That check originated on the server. Off-server reachability and each cloud provider's connector configuration still need their own connection check.
+`get_skill` works without the app running. The other checks require the app. The artifact, whiteboard and feedback tools have been exercised through actual MCP stdio and authenticated HTTPS connections. Verify off-server reachability and your client's connector configuration for your own deployment.
 
 ## Notifications and protocol versions
 
